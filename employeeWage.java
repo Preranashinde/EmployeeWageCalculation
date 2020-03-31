@@ -4,18 +4,17 @@ public class employeeWage
    public static int totalSalary=0;
    public static int totalEmployeeHours=0;
    public static int noOfDays=0;
-	final int IS_FULLTIME=1, IS_PARTTIME=2;
+	final int IS_FULL_TIME=1, IS_PART_TIME=2;
 
 	public static void main ( String[] args )
 	{
-
 		employeeWage employee= new employeeWage();
-		employee.wageCalculation(20,20,100);
+		employee.wageCalculation("Microsoft India",20,25,110);
+		employee.wageCalculation("Mercedes Benz",22,30,100);
+
 	}
 
-
-
-public void wageCalculation( int MAXIMUM_DAYS, int WAGE_PER_HOUR, int MAXIMUM_HOURS )
+	public void wageCalculation( String companyName, int MAXIMUM_DAYS, int WAGE_PER_HOUR, int MAXIMUM_HOURS )
 	{
       while ( totalEmployeeHours < MAXIMUM_HOURS && noOfDays < MAXIMUM_DAYS )
       {
@@ -23,10 +22,10 @@ public void wageCalculation( int MAXIMUM_DAYS, int WAGE_PER_HOUR, int MAXIMUM_HO
         noOfDays+=1;
         switch (employeeCheck)
         {
-				case IS_FULLTIME:
+				case IS_FULL_TIME:
             employeeWorkHours=8;
             break;
-				case IS_PARTTIME:
+				case IS_PART_TIME:
             employeeWorkHours=4;
             break;
 				default:
@@ -38,6 +37,6 @@ public void wageCalculation( int MAXIMUM_DAYS, int WAGE_PER_HOUR, int MAXIMUM_HO
         totalSalary+=salary;
         System.out.println("Salary of employee on "+noOfDays+ " is "+salary);
       }
-      System.out.println("Total salary of employee is "+totalSalary);
+		System.out.println("Company name is: "+companyName+" Total salary of employee is:"+ totalSalary);
 	}
 }
