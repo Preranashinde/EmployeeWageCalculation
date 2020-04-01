@@ -1,84 +1,99 @@
 import java.util.Scanner;
-public class employeeWage{
-//CONSTANTS
-public static final int IS_FULL_TIME=1, IS_PART_TIME=2;
-//variables
-public static  int wagePerHour, numberOfWorkingDays, maximumHoursInMonth;
-static int totalWage=0;
-
-public static void main(String args[]){
-	Scanner sc=new Scanner(System.in);
-	System.out.println("Enter the how many companies you want to enter");
-	int totalCompanies= sc.nextInt();
-	EmployeeWageBuilder company[] = new EmployeeWageBuilder[totalCompanies];
-	for (int number = 0; number < totalCompanies; number++) {
-		
-		wagePerHour = (int) (100 + Math.random() * 500);
-
-		numberOfWorkingDays = (int) (20 + Math.random() * 26);
-
-		maximumHoursInMonth = (int) (100 + Math.random() * 190);
-		
-		company[number] = new EmployeeWageBuilder(wagePerHour, numberOfWorkingDays,maximumHoursInMonth);
-		calculationOfWage(company[number], number);
-	}
+interface EmployeeWageInterface {
+   void calculationOfWage();
 }
 
-public static void calculationOfWage(EmployeeWageBuilder company, int employeeNumber) {
-	int salary=0, totalEmployeeHours=0, totalWorkingDays=0 ,totalWage=0;
-	while ( totalEmployeeHours <=company.getMaximumHoursInMonth() && totalWorkingDays < company.getNumberOfWorkingDays()){
-		int checkNumber=(int)(Math.floor(Math.random()*10)%3);
-		int employeeWorkHours=0;
-		totalWorkingDays+=1;
-		switch (checkNumber){
-			case IS_FULL_TIME:
-				employeeWorkHours=8;
-				break;
-			case IS_PART_TIME:
-				employeeWorkHours=4;
-				break;
-			default:
-				employeeWorkHours=0;
-				break;
-			}
-		salary=employeeWorkHours*company.getWagePerHour();
-		totalEmployeeHours+=employeeWorkHours;
-		totalWage+=salary;
-	}
-	company.setTotalWage(totalWage);
-	System.out.println("ToTal Salary of Employee-" +(employeeNumber + 1)+ " is::"+ totalWage);
+public class employeeWage implements EmployeeWageInterface {
+
+   //CONSTANTS
+   public static final int IS_FULL_TIME = 1, IS_PART_TIME = 2;
+   public final int TOTAL_COMPANIES;
+
+   //Variables
+   public static int employeeRatePerHour = 0, numberOfWorkingDays = 0;
+   public static int maximumHoursInMonth = 0;
+   EmployeeWageOfCompany employee[];
+
+   public employeeWage(int totalCompanies) {
+
+      this.TOTAL_COMPANIES = totalCompanies;
+      this.employee =new EmployeeWageOfCompany [this.TOTAL_COMPANIES];
+   }
+      public static void main(String args[]) {
+      Scanner sc=new Scanner(System.in);
+      System.out.println("Enter the Total companies");
+      int totalCompanies= sc.nextInt();
+      employeeWage company = new employeeWage(totalCompanies);
+      for (int i = 0; i < company.employee.length; i++) {
+
+         employeeRatePerHour = (int) (100 + Math.random() * 200);
+         numberOfWorkingDays = (int) (20 + Math.random() * 25);
+         maximumHoursInMonth = (int) (100 + Math.random() * 200);
+
+         company.employee[i] = new EmployeeWageOfCompany(employeeRatePerHour,numberOfWorkingDays, maximumHoursInMonth);
+      }
+      company.calculationOfWage();
+   }
+
+public void calculationOfWage() {
+
+   for(int employeeNumber = 0; employeeNumber < employee.length; employeeNumber++){
+      int employeeHours = 0, employeeWage = 0, totalEmployeeWage = 0;
+      int totalWorkingDays = 0, totalEmployeeHours = 0;
+      //Computation
+      while (totalEmployeeHours <= employee[employeeNumber].getMaximumHoursInMonth() &&
+            totalWorkingDays < employee[employeeNumber].getNumberOfWorkingDays()) {
+         totalWorkingDays++;
+		int employeeCheck = ((int) Math.floor(Math.random() * 10)) % 3;
+         switch(employeeCheck) {
+            case IS_FULL_TIME:
+               employeeHours = 8;
+               break;
+            case IS_PART_TIME:
+               employeeHours = 4;
+               break;
+            default:
+               employeeHours = 0;
+         }
+         totalEmployeeHours += employeeHours;
+         employeeWage = employeeHours * employee[employeeNumber].getEmployeeRatePerHour();
+         totalEmployeeWage += employeeWage;
+      }
+      employee[employeeNumber].setTotalEmployeeWage(totalEmployeeWage);
+      System.out.println("Monthly salary of employee is " + (employeeNumber + 1) + ":" + totalEmployeeWage);
+   }
+}
 }
 
+class EmployeeWageOfCompany{
+
+   //CONSTANTS
+   private final int EMPLOYEE_RATE_PER_HOUR, NUMBER_OF_WORKING_DAYS, MAXIMUM_HOURS_IN_MONTH;
+
+   //Variables
+   private int totalEmployeeWage = 0;
+   public EmployeeWageOfCompany(int employeeRatePerHour,int numberOfWorkingDays,int maximumHoursInMonth) {
+
+      this.EMPLOYEE_RATE_PER_HOUR = employeeRatePerHour;
+      this.NUMBER_OF_WORKING_DAYS = numberOfWorkingDays;
+      this.MAXIMUM_HOURS_IN_MONTH = maximumHoursInMonth;
+   }
+
+   public int getEmployeeRatePerHour() {
+      return EMPLOYEE_RATE_PER_HOUR;
+   }
+
+   public int getNumberOfWorkingDays() {
+      return NUMBER_OF_WORKING_DAYS;
+   }
+
+   public int getMaximumHoursInMonth() {
+      return MAXIMUM_HOURS_IN_MONTH;
 }
 
+   public void setTotalEmployeeWage(int totalEmployeeWage) {
+      this.totalEmployeeWage = totalEmployeeWage;
+   }
 
-class EmployeeWageBuilder{
-	//CONSTANTS
-	public static int wagePerHour, numberOfWorkingDays, maximumHoursInMonth;
-	public static int NUMBER_OF_WORKING_DAYS, WAGE_PER_HOUR, MAXIMUM_HOURS_IN_MONTH;
-	//Variables
-	static int totalWage=0;
-
-   public EmployeeWageBuilder( int numberOfWorkingDays, int wagePerHour, int maximumHoursInMonth ){
-
-		this.NUMBER_OF_WORKING_DAYS = numberOfWorkingDays;
-		this.WAGE_PER_HOUR = wagePerHour;
-		this.MAXIMUM_HOURS_IN_MONTH = maximumHoursInMonth;
-	}
-
-	public int getWagePerHour() {
-		return WAGE_PER_HOUR;
-	}
-
-	public int getNumberOfWorkingDays() {
-		return NUMBER_OF_WORKING_DAYS;
-	}
-
-	public int getMaximumHoursInMonth() {
-		return MAXIMUM_HOURS_IN_MONTH;
-	}
-
-	public void setTotalWage(int totalWage) {
-		this.totalWage = totalWage;
-	}
 }
+
