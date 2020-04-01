@@ -1,48 +1,45 @@
 import java.util.Scanner;
+import java.util.*;
 interface EmployeeWageInterface {
    void calculationOfWage();
 }
 
 public class employeeWage implements EmployeeWageInterface {
-
    //CONSTANTS
-   public static final int IS_FULL_TIME = 1, IS_PART_TIME = 2;
-   public final int TOTAL_COMPANIES;
-
+   private static final int IS_FULL_TIME = 1, IS_PART_TIME = 2;
+ 
    //Variables
-   public static int employeeRatePerHour = 0, numberOfWorkingDays = 0;
-   public static int maximumHoursInMonth = 0;
-   EmployeeWageOfCompany employee[];
+   private static int employeeRatePerHour = 0, numberOfWorkingDays = 0;
+   private static int maximumHoursInMonth = 0;
+	ArrayList <EmployeeWageOfCompany> employee = new ArrayList<EmployeeWageOfCompany>();
 
-   public employeeWage(int totalCompanies) {
-
-      this.TOTAL_COMPANIES = totalCompanies;
-      this.employee =new EmployeeWageOfCompany [this.TOTAL_COMPANIES];
-   }
-      public static void main(String args[]) {
-      Scanner sc=new Scanner(System.in);
-      System.out.println("Enter the Total companies");
-      int totalCompanies= sc.nextInt();
-      employeeWage company = new employeeWage(totalCompanies);
-      for (int i = 0; i < company.employee.length; i++) {
-
+	public static void main(String[] args) {
+      Scanner sc = new Scanner(System.in);
+		System.out.println("Welcome to Employee Wage Computation\n");
+		employeeWage company = new employeeWage();
+		int chooseOption;
+		do{
          employeeRatePerHour = (int) (100 + Math.random() * 200);
          numberOfWorkingDays = (int) (20 + Math.random() * 25);
          maximumHoursInMonth = (int) (100 + Math.random() * 200);
 
-         company.employee[i] = new EmployeeWageOfCompany(employeeRatePerHour,numberOfWorkingDays, maximumHoursInMonth);
-      }
-      company.calculationOfWage();
-   }
+         company.employee.add(new EmployeeWageOfCompany(employeeRatePerHour,numberOfWorkingDays, maximumHoursInMonth));
+			chooseOption = sc.nextInt();
+		}
+		while(chooseOption == 1);
+		company.calculationOfWage();
+
+	}
 
 public void calculationOfWage() {
 
-   for(int employeeNumber = 0; employeeNumber < employee.length; employeeNumber++){
+   for(EmployeeWageOfCompany Employee: employee){
+		int employeeNumber=1;
       int employeeHours = 0, employeeWage = 0, totalEmployeeWage = 0;
       int totalWorkingDays = 0, totalEmployeeHours = 0;
       //Computation
-      while (totalEmployeeHours <= employee[employeeNumber].getMaximumHoursInMonth() &&
-            totalWorkingDays < employee[employeeNumber].getNumberOfWorkingDays()) {
+      while (totalEmployeeHours <= Employee.getMaximumHoursInMonth() &&
+            totalWorkingDays < Employee.getNumberOfWorkingDays()) {
          totalWorkingDays++;
 		int employeeCheck = ((int) Math.floor(Math.random() * 10)) % 3;
          switch(employeeCheck) {
@@ -56,15 +53,15 @@ public void calculationOfWage() {
                employeeHours = 0;
          }
          totalEmployeeHours += employeeHours;
-         employeeWage = employeeHours * employee[employeeNumber].getEmployeeRatePerHour();
+         employeeWage = employeeHours * Employee.getEmployeeRatePerHour();
          totalEmployeeWage += employeeWage;
       }
-      employee[employeeNumber].setTotalEmployeeWage(totalEmployeeWage);
-      System.out.println("Monthly salary of employee is " + (employeeNumber + 1) + ":" + totalEmployeeWage);
+		Employee.setTotalEmployeeWage(totalEmployeeWage);
+      System.out.println("Monthly salary of employee is "+(employeeNumber)+":" +totalEmployeeWage);
+		employeeNumber++;
    }
 }
 }
-
 class EmployeeWageOfCompany{
 
    //CONSTANTS
@@ -94,6 +91,6 @@ class EmployeeWageOfCompany{
    public void setTotalEmployeeWage(int totalEmployeeWage) {
       this.totalEmployeeWage = totalEmployeeWage;
    }
-
 }
+
 
