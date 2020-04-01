@@ -7,8 +7,7 @@ interface EmployeeWageInterface {
 public class employeeWage implements EmployeeWageInterface {
    //CONSTANTS
    private static final int IS_FULL_TIME = 1, IS_PART_TIME = 2;
- 
-   //Variables
+  //Variables
    private static int employeeRatePerHour = 0, numberOfWorkingDays = 0;
    private static int maximumHoursInMonth = 0;
 	ArrayList <EmployeeWageOfCompany> employee = new ArrayList<EmployeeWageOfCompany>();
@@ -53,8 +52,10 @@ public void calculationOfWage() {
                employeeHours = 0;
          }
          totalEmployeeHours += employeeHours;
+			Employee.addDailyWage(employeeWage);
          employeeWage = employeeHours * Employee.getEmployeeRatePerHour();
          totalEmployeeWage += employeeWage;
+			System.out.println("Day " + totalWorkingDays + ":" + employeeWage);
       }
 		Employee.setTotalEmployeeWage(totalEmployeeWage);
       System.out.println("Monthly salary of employee is "+(employeeNumber)+":" +totalEmployeeWage);
@@ -62,11 +63,11 @@ public void calculationOfWage() {
    }
 }
 }
-class EmployeeWageOfCompany{
+	 class EmployeeWageOfCompany{
 
    //CONSTANTS
    private final int EMPLOYEE_RATE_PER_HOUR, NUMBER_OF_WORKING_DAYS, MAXIMUM_HOURS_IN_MONTH;
-
+	private ArrayList<Integer> dailyWages = new ArrayList<Integer>();
    //Variables
    private int totalEmployeeWage = 0;
    public EmployeeWageOfCompany(int employeeRatePerHour,int numberOfWorkingDays,int maximumHoursInMonth) {
@@ -86,8 +87,12 @@ class EmployeeWageOfCompany{
 
    public int getMaximumHoursInMonth() {
       return MAXIMUM_HOURS_IN_MONTH;
-}
+	}
 
+	public void addDailyWage(int wage) {
+
+		dailyWages.add(wage);
+	}
    public void setTotalEmployeeWage(int totalEmployeeWage) {
       this.totalEmployeeWage = totalEmployeeWage;
    }
